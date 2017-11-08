@@ -15,8 +15,10 @@
     }
   }
 
-  function getStepData(stepFile, callback) {
-    qRequest.open('GET', '/api/getstepdata' + '?step=greetings', true);
+  function getStepData(step, callback) {
+    var s = step || 'greetings';
+
+    qRequest.open('GET', '/api/getstepdata' + '?step=' + s, true);
     qRequest.onreadystatechange = handleRequestChange.bind(this, callback);
     qRequest.send();
   }

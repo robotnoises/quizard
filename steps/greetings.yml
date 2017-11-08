@@ -1,9 +1,10 @@
 name: greetings
-question: Do you want to be a Web Developer?
+question: So, you want to be a Web Developer?
+transition: fadeIn
 choices:
   -
-    label: Yeah
+    label: Yeah!
     next: interests
   -
-    label: Nah
+    label: Nope.
     next: butwhy

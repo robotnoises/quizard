@@ -6,5 +6,4 @@ node_modules
 
 # Project
 steps/*
-!steps/.placeholder
 !steps/greetings.yml

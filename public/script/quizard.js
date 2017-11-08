@@ -3,6 +3,8 @@
  */
 
 function addClass(el, className) {
+  if (!el) return;
+
   if (el.classList) {
     el.classList.add(className);
   } else {
@@ -11,6 +13,8 @@ function addClass(el, className) {
 }
 
 function removeClass(el, className) {
+  if (!el) return;
+
   if (el.classList) {
     el.classList.remove(className);
   } else {
@@ -18,10 +22,26 @@ function removeClass(el, className) {
   }
 }
 
+function removeElement(el) {
+  if (!el) return;
+
+  el.outerHTML = '';
+  delete el;
+}
+
 function setText(el, str) {
   if (el) {
     el.innerText = str;
   }
+}
+
+function cloneCurrentStep(el, containerEl) {
+  var cloned = el && el.cloneNode(true);
+  
+  el.id = 'previousstep';
+  containerEl.appendChild(cloned);
+
+  el.addEventListener('animationend', removeElement.bind(this, el));
 }
 
 function query(key) {
@@ -36,6 +56,10 @@ function query(key) {
   }
 
   return vars[key];
+}
+
+function slide(currentEl) {
+  addClass(currentEl, 'slideOutUp');
 }
 
 function setStep(next) {
@@ -69,15 +93,29 @@ function addButton(containerEl, btnEl) {
 }
 
 function load(step) {
+  var questionEl;
+  var answersEl;
   var request = window.qRequest;
-  var questionEl = document.getElementById('question');
-  var answersEl = document.getElementById('answers');
-  var currentStep;
-  
-  var stepToLoad = step || 'greetings';
-  var i = 0;
 
+  var stepToLoad = step || 'greetings';
+  var currentStep;
+  var i = 0;
+  
   request.getStepData(stepToLoad, function (s) {
+    var currentStepEl;
+    var prevStepEl;
+
+    cloneCurrentStep(document.getElementById('currentstep'), document.getElementById('main'));
+    
+    currentStepEl = document.getElementById('currentstep');
+    prevStepEl = document.getElementById('previousstep');
+    questionEl = document.getElementsByClassName('question')[1] ? 
+      document.getElementsByClassName('question')[1] :
+      document.getElementsByClassName('question')[0];
+    answersEl = document.getElementsByClassName('answers')[1] ?
+      document.getElementsByClassName('answers')[1] :
+      document.getElementsByClassName('answers')[0];
+
     currentStep = new Step(s);
     
     // Set the current Question
@@ -85,7 +123,9 @@ function load(step) {
     addClass(questionEl, currentStep.transition);
 
     // Set the current possible answers
-    answersEl.innerHTML = null;
+    if (answersEl) {
+      answersEl.innerHTML = null;
+    }
 
     for (; i < currentStep.choices.length; i++) {
       var btn = new Choice(currentStep.choices[i]);
@@ -93,6 +133,8 @@ function load(step) {
 
       addButton(answersEl, btnEl);
     }
+
+    slide(prevStepEl);
   });
 }
 
@@ -118,8 +160,9 @@ function Choice(props) {
  */
 
 (function (window) {
+  // Load for current step
   load(query('step'));
 
   // Set-up load() to listen for history changes
-  window.onpopstate = load.bind(this, history.state.step);
+  window.onpopstate = load.bind(this, history.state && history.state.step);
 }(window));

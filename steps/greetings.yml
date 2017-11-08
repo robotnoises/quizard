@@ -1,6 +1,5 @@
 name: greetings
 question: So, you want to be a Web Developer?
-transition: fadeIn
 choices:
   -
     label: Yeah!

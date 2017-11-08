@@ -1,4 +1,28 @@
 /**
+ * Models
+ */
+
+function Step(props) {
+  this.name = props.name || '';
+  this.question = props.question || '';
+  this.choices = props.choices || [];
+  this.scores = props.scores || [];
+  this.links = props.links || '';
+  this.transition = props.transition || 'fadeIn';
+}
+
+function Choice(props) {
+  this.label = props.label || '';
+  this.next = props.next || 'error';
+}
+
+function Score(props) {
+  this.name = props.name || '';
+  this.link = props.link || '';
+  this.values = props.values || {};
+}
+
+/**
  * Utils
  */
 
@@ -86,9 +110,26 @@ function createButton(label, next) {
   return btn;
 }
 
-function addButton(containerEl, btnEl) {
-  if (containerEl && btnEl) {
-    containerEl.appendChild(btnEl);
+function createLink(label, href) {
+  var container = document.createElement('div');
+  var link = document.createElement('a');
+
+  link.href = href;
+  link.target = '_blank';
+
+  setText(link, label);
+  addClass(container, 'link');
+  addClass(container, 'animated');
+  addClass(container, 'tada');
+
+  container.appendChild(link);
+
+  return container;
+}
+
+function addElement(containerEl, el) {
+  if (containerEl && el) {
+    containerEl.appendChild(el);
   }
 }
 
@@ -102,8 +143,13 @@ function load(step) {
   var i = 0;
   
   request.getStepData(stepToLoad, function (s) {
+
+    // todo: break all of this up 
+
     var currentStepEl;
     var prevStepEl;
+    var answers;
+    var isChoice = false;
 
     cloneCurrentStep(document.getElementById('currentstep'), document.getElementById('main'));
     
@@ -122,37 +168,34 @@ function load(step) {
     setText(questionEl, currentStep.question);
     addClass(questionEl, currentStep.transition);
 
+    if (currentStep.question.length > 40) {
+      addClass(questionEl, 'smaller');
+    } else {
+      removeClass(questionEl, 'smaller');
+    }
+
     // Set the current possible answers
     if (answersEl) {
       answersEl.innerHTML = null;
     }
 
-    for (; i < currentStep.choices.length; i++) {
-      var btn = new Choice(currentStep.choices[i]);
-      var btnEl = createButton(btn.label, btn.next);
+    // Is the list of answers going to be a list of
+    // "Scores"or "Choices?"
+    if (currentStep.scores.items) {
+      answers = currentStep.scores.items;      
+    } else {
+      isChoice = true;
+      answers = currentStep.choices;
+    }
 
-      addButton(answersEl, btnEl);
+    for (; i < answers.length; i++) {
+      var answer = isChoice ? new Choice(answers[i]) : new Score(answers[i]);
+      var el = isChoice ? createButton(answer.label, answer.next) : createLink(answer.name, answer.link)
+      addElement(answersEl, el);
     }
 
     slide(prevStepEl);
   });
-}
-
-/**
- * Models
- */
-
-function Step(props) {
-  this.name = props.name || '';
-  this.question = props.question || '';
-  this.choices = props.choices || [];
-  this.link = props.link || '';
-  this.transition = props.transition || 'fadeIn';
-}
-
-function Choice(props) {
-  this.label = props.label || '';
-  this.next = props.next || 'error';
 }
 
 /**
@@ -164,5 +207,5 @@ function Choice(props) {
   load(query('step'));
 
   // Set-up load() to listen for history changes
-  window.onpopstate = load.bind(this, history.state && history.state.step);
+  window.onpopstate = load.bind(this, window.history.state && window.history.state.step);
 }(window));

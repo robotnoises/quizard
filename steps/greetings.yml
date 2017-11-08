@@ -1,0 +1,9 @@
+name: greetings
+question: Do you want to be a Web Developer?
+choices:
+  -
+    label: Yeah
+    next: interests
+  -
+    label: Nah
+    next: butwhy

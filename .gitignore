@@ -1,0 +1,10 @@
+# IDE
+.vscode
+
+# Modules
+node_modules
+
+# Project
+steps/*
+!steps/.placeholder
+!steps/greetings.yml

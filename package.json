@@ -1,0 +1,17 @@
+{
+  "name": "quizard",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "author": "David Nichols",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "js-yaml": "^3.10.0",
+    "yaml": "^0.3.0"
+  }
+}

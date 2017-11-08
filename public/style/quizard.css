@@ -19,6 +19,8 @@ h5,
 h6 {
   font-weight: 900;
   font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  /* text-shadow: 3px 3px 0px rgba(0,0,0,0.3); */
 }
 
 p,
@@ -47,6 +49,7 @@ a {
   right: 0;
   bottom: 0;
   left: 0;
+  background-color: #9b59b6;
 }
 
 .container {
@@ -114,10 +117,12 @@ a {
   height: 100%;
   width: 100%;
   padding: 0 32px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .link:hover a {
-  color: #6a3093;
+  color: #9b59b6;
 }
 
 /* Buttons */
@@ -142,7 +147,7 @@ button {
 
 button:hover {
   background-color: #fff;
-  color: #6a3093;
+  color: #9b59b6;
 }
 
 /* Effects */
@@ -161,14 +166,12 @@ button:hover {
   color: #2c3e50;
 }
 
-.gradient-orange {
-  background: #E44D26;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(45deg, #F16529, #E44D26);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(45deg, #F16529, #E44D26); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-.gradient-purple {
-  background: #6a3093;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(45deg, #a044ff, #6a3093);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(45deg, #a044ff, #6a3093); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.gradient {
+  position: fixed;
+  pointer-events: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.15) 5%, transparent 25%);
 }

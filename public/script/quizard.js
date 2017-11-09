@@ -214,6 +214,6 @@ function load(step) {
   // Load for current step
   load(query('step'));
 
-  // Set-up load() to listen for history changes
+  // Listen for history state changes
   window.onpopstate = handleHistoryStateChange;
 }(window));

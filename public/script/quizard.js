@@ -133,6 +133,14 @@ function addElement(containerEl, el) {
   }
 }
 
+function handleHistoryStateChange() {
+  var state = window.history.state ?
+    window.history.state.step :
+    'greetings';
+
+  load(state);
+}
+
 function load(step) {
   var questionEl;
   var answersEl;
@@ -207,5 +215,5 @@ function load(step) {
   load(query('step'));
 
   // Set-up load() to listen for history changes
-  window.onpopstate = load.bind(this, window.history.state && window.history.state.step);
+  window.onpopstate = handleHistoryStateChange;
 }(window));

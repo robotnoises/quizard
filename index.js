@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const file = require('./lib/file');
+const { Error } = require('./lib/presentation');
 
 const app = express();
 
@@ -34,7 +35,9 @@ app.get('/api/getstepdata', (req, res) => {
 
   file.loadStep(step)
     .then(response => res.json(response))
-    .catch(err => res.status(500).json({ msg: 'error' }));
+    .catch(err => {
+      res.status(500).json(new Error(err));
+    });
 });
 
 app.get('/api/getconfig', (req, res) => {

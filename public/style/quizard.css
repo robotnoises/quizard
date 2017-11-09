@@ -131,7 +131,7 @@ a {
   bottom: 24px;
   height: 64px;
   width: 64px;
-  opacity: 0.5;
+  opacity: 0.3;
   z-index: 3;
   transition: opacity 100ms;
 }

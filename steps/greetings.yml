@@ -1,10 +1,13 @@
 name: greetings
 title: knock-knock
 question: Do you want to build a snowman?
+key: snowman
 choices:
   -
-    label: Yeah!
+    name: Yeah
+    value: 2
     next: end
   -
-    label: Nope.
+    name: No
+    value: 1
     next: end

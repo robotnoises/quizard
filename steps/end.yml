@@ -1,0 +1,24 @@
+name: end
+title: Done
+question: Ok, based on your previous choice, this is what I recommend
+scores:
+  limit: 3
+  items:
+    -
+      name: Build a snowman!
+      link: https://www.youtube.com/watch?v=V-zXT5bIBM0
+      value:
+        build: 3
+        dontbuild: 1
+    -
+      name: Watch paint dry
+      link: https://www.youtube.com/watch?v=nGA-GCq7JWM
+      value:
+        build: 1
+        dontbuild: 2
+    -
+      name: Set a Snowman on fire
+      link: https://www.youtube.com/watch?v=zVP3xis4IKA
+      value:
+        build: 1
+        dontbuild: 3

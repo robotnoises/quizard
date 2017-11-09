@@ -3,6 +3,7 @@
  */
 
 function Step(props) {
+  this.key = props.key || '';
   this.name = props.name || '';
   this.question = props.question || '';
   this.choices = props.choices || [];
@@ -12,14 +13,36 @@ function Step(props) {
 }
 
 function Choice(props) {
-  this.label = props.label || '';
+  this.name = props.name || '';
+  this.value = props.value || 1;
   this.next = props.next || 'error';
 }
 
 function Score(props) {
   this.name = props.name || '';
   this.link = props.link || '';
-  this.values = props.values || {};
+  this.value = props.value || {};
+}
+
+function Answer(key, value) {
+  this.key = key || '';
+  this.value = value || ''
+}
+
+function Answers(raw) {
+  this.scores = raw ? JSON.parse(raw) : {};
+
+  this.calculate = function (scoreList) {
+    // todo
+  };
+
+  this.add = function (answer) {
+    this.scores[answer.key] = answer.value;
+  };
+
+  this.serialize = function () {
+    return JSON.stringify(this.scores);
+  };
 }
 
 /**
@@ -86,8 +109,21 @@ function slide(currentEl) {
   addClass(currentEl, 'slideOutUp');
 }
 
-function setStep(next) {
+function getAnswers() {
+  var raw = window.sessionStorage.getItem('quizardanswers'); // todo: config
+  return new Answers(raw);
+}
+
+function recordAnswer(answer) {
+  var answers = getAnswers();
+  answers.add(answer);
+  window.sessionStorage.setItem('quizardanswers', answers.serialize());
+}
+
+function advanceStep(answer, next) {
   var history = window.history || null;
+
+  recordAnswer(answer);
 
   if (history) {
     history.pushState({ step: next }, next, '?step=' + next);
@@ -97,12 +133,13 @@ function setStep(next) {
   }
 }
 
-function createButton(label, next) {
+function createButton(key, choice) {
   var btn = document.createElement('button');
+  var answer = new Answer(key, choice.value);
 
-  btn.addEventListener('click', setStep.bind(this, next));
+  btn.addEventListener('click', advanceStep.bind(this, answer, choice.next));
 
-  setText(btn, label);
+  setText(btn, choice.name);
   addClass(btn, 'animated');
   addClass(btn, 'bounceInUp');
   addClass(btn, 'grow');
@@ -206,7 +243,9 @@ function load(step) {
 
     for (; i < answers.length; i++) {
       var answer = isChoice ? new Choice(answers[i]) : new Score(answers[i]);
-      var el = isChoice ? createButton(answer.label, answer.next) : createLink(answer.name, answer.link)
+      var key = currentStep.key || currentStep.name;
+      var el = isChoice ? createButton(key, answer) : createLink(answer.name, answer.link);
+
       addElement(answersEl, el);
     }
 

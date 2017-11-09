@@ -1,9 +1,10 @@
 name: greetings
-question: So, you want to be a Web Developer?
+title: knock-knock
+question: Do you want to build a snowman?
 choices:
   -
     label: Yeah!
-    next: interests
+    next: end
   -
     label: Nope.
-    next: butwhy
+    next: end

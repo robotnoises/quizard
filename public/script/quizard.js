@@ -127,6 +127,14 @@ function createLink(label, href) {
   return container;
 }
 
+function createLogo(uri) {
+  var logo = document.getElementById('logo');
+  var img = document.createElement('img');
+
+  img.src = uri;
+  logo.appendChild(img);
+}
+
 function addElement(containerEl, el) {
   if (containerEl && el) {
     containerEl.appendChild(el);
@@ -206,11 +214,26 @@ function load(step) {
   });
 }
 
+function init() {
+  var request = window.qRequest;
+
+  request.getConfig(function (config) {
+    document.title = config.title;
+
+    if (config.logo) {
+      createLogo(config.logo);
+    }
+  });
+}
+
 /**
  * Main
  */
 
 (function (window) {
+  // Initialize the page
+  init();
+
   // Load for current step
   load(query('step'));
 

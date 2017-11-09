@@ -3,7 +3,3 @@
 
 # Modules
 node_modules
-
-# Project
-steps/*
-!steps/greetings.yml

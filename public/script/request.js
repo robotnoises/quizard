@@ -1,4 +1,4 @@
-(function (window) {
+function request() {
   var qRequest;
   
   // Old compatibility code, no longer needed.
@@ -8,21 +8,37 @@
     qRequest = new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-  function handleRequestChange(callback) {
-    if (qRequest && qRequest.readyState === 4) {
-      var response = qRequest.responseText;
-      callback(JSON.parse(response))
-    }
-  }
+  return qRequest;
+}
 
+function handleRequestChange(req, callback) {
+  if (req.readyState === 4) {
+    callback(JSON.parse(req.responseText))
+  }
+}
+
+/**
+ * Main
+ */
+
+(function (window) {
   function getStepData(step, callback) {
+    var req = request();
     var s = step || 'greetings';
 
-    qRequest.open('GET', '/api/getstepdata' + '?step=' + s, true);
-    qRequest.onreadystatechange = handleRequestChange.bind(this, callback);
-    qRequest.send();
+    req.open('GET', '/api/getstepdata' + '?step=' + s, true);
+    req.onreadystatechange = handleRequestChange.bind(this, req, callback);
+    req.send();
+  }
+
+  function getConfig(callback) {
+    var req = request();
+    req.open('GET', '/api/getconfig', true);
+    req.onreadystatechange = handleRequestChange.bind(this, req, callback);
+    req.send();
   }
 
   window.qRequest = window.qRequest || {};
   window.qRequest.getStepData = getStepData;
+  window.qRequest.getConfig = getConfig;
 }(window));

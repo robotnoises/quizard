@@ -125,6 +125,25 @@ a {
   color: #9b59b6;
 }
 
+.logo {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  height: 64px;
+  width: 64px;
+  opacity: 0.5;
+  z-index: 3;
+  transition: opacity 100ms;
+}
+
+.logo:hover {
+  opacity: 1;
+}
+
+.logo img {
+  height: 100%;
+}
+
 /* Buttons */
 
 button {
